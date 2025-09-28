@@ -7,8 +7,6 @@ on:
       - '3-tier-project/**'
   pull_request:
     branches: [ "main" ]
-    paths:
-      - '3-tier-project/**'
 
 jobs:
   build:
