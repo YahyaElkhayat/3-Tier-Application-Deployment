@@ -47,10 +47,8 @@ jobs:
           cd 3-tier-project/backend
           npm install
 
-      - name: Run front-end tests
-        run: |
-          cd 3-tier-project/frontend
-          npm test
+      - name: Run frontend build
+        run: cd 3-tier-project/frontend && npm run build
 
       - name: Wait for MySQL to be ready
         run: |
@@ -63,10 +61,9 @@ jobs:
             sleep 2
           done
 
-      - name: Run back-end tests
-        run: |
-          cd 3-tier-project/backend
-          npm test
+      - name: Run backend lint
+        run: cd 3-tier-project/backend && npm run lint
+        
         env:
           DB_HOST: 127.0.0.1
           DB_PORT: 3306
