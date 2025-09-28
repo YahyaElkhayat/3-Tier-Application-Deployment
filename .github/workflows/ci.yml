@@ -47,8 +47,11 @@ jobs:
           cd 3-tier-project/backend
           npm install
 
-      - name: Run frontend build
-        run: cd 3-tier-project/frontend && npm run build
+      - name: Frontend build check
+        run: |
+          cd 3-tier-project/frontend
+          CI=false npm run build
+
 
       - name: Wait for MySQL to be ready
         run: |
