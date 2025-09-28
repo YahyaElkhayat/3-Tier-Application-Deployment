@@ -7,6 +7,8 @@ on:
       - '3-tier-project/**'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - '3-tier-project/**'
 
 jobs:
   build:
@@ -29,7 +31,7 @@ jobs:
           --health-retries=5
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Node.js
@@ -37,27 +39,46 @@ jobs:
         with:
           node-version: '21'
 
-      - name: Install Dependencies
+      - name: Install front-end dependencies
         run: |
-          cd frontend && npm install
-          cd ../backend && npm install
+          cd 3-tier-project/frontend
+          npm install
+
+      - name: Install back-end dependencies
+        run: |
+          cd 3-tier-project/backend
+          npm install
 
       - name: Run front-end tests
-        run: cd frontend && npm test
+        run: |
+          cd 3-tier-project/frontend
+          npm test
+
+      - name: Wait for MySQL to be ready
+        run: |
+          for i in {1..30}; do
+            if mysql -h 127.0.0.1 -uschool_user -ppassword123 -e "SELECT 1" &>/dev/null; then
+              echo "MySQL is ready!"
+              break
+            fi
+            echo "Waiting for MySQL..."
+            sleep 2
+          done
 
       - name: Run back-end tests
-        run: cd backend && npm test
+        run: |
+          cd 3-tier-project/backend
+          npm test
         env:
           DB_HOST: 127.0.0.1
           DB_PORT: 3306
           DB_USER: school_user
           DB_PASSWORD: password123
           DB_NAME: school
-           
+
       - name: Official SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v4.2.2
         with:
           args: >
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
           projectBaseDir: ./3-tier-project
-
