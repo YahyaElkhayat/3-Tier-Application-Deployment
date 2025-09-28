@@ -23,17 +23,17 @@
  
 
   .store-student-details {
-    font-size: 22px;
+    font-size: 24px;
     background: -webkit-linear-gradient(#ffeb7c, #297eff);
   -webkit-text-fill-color: black;
     color: transparent;
     display: inline-block;
-    padding: 10px 22px;
+    padding: 10px 20px;
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
     background-color: white;
-    border-radius: 12px;
-    margin-left: 102px;
+    border-radius: 10px;
+    margin-left: 100px;
   }
   
   
