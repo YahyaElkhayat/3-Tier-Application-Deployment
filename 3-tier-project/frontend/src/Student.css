@@ -23,7 +23,7 @@
  
 
   .store-student-details {
-    font-size: 24px;
+    font-size: 22px;
     background: -webkit-linear-gradient(#ffeb7c, #297eff);
   -webkit-text-fill-color: black;
     color: transparent;
@@ -33,7 +33,7 @@
     box-decoration-break: clone;
     background-color: white;
     border-radius: 10px;
-    margin-left: 100px;
+    margin-left: 102px;
   }
   
   
