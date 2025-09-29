@@ -77,9 +77,11 @@ jobs:
           DB_PASSWORD: password123
           DB_NAME: school
 
-      - name: Official SonarQube Scan
+      - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v6
         with:
           args: >
+            -Dsonar.projectKey=yahyaelkhayat_3-tier-analysis
+            -Dsonar.organization=yahyaelkhayat
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
           projectBaseDir: ./3-tier-project
