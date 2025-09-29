@@ -78,7 +78,7 @@ jobs:
           DB_NAME: school
 
       - name: Official SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v4.2.2
+        uses: SonarSource/sonarqube-scan-action@v6
         with:
           args: >
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
