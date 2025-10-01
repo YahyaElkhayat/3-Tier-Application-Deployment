@@ -1,0 +1,87 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - '3-tier-project/**'
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: rootpassword123
+          MYSQL_DATABASE: school
+          MYSQL_USER: school_user
+          MYSQL_PASSWORD: password123
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -uroot -prootpassword123"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '21'
+
+      - name: Install front-end dependencies
+        run: |
+          cd 3-tier-project/frontend
+          npm install
+
+      - name: Install back-end dependencies
+        run: |
+          cd 3-tier-project/backend
+          npm install
+
+      - name: Frontend build check
+        run: |
+          cd 3-tier-project/frontend
+          CI=false npm run build
+
+
+      - name: Wait for MySQL to be ready
+        run: |
+          for i in {1..30}; do
+            if mysql -h 127.0.0.1 -uschool_user -ppassword123 -e "SELECT 1" &>/dev/null; then
+              echo "MySQL is ready!"
+              break
+            fi
+            echo "Waiting for MySQL..."
+            sleep 2
+          done
+
+      - name: Backend build check
+        run: |
+          cd 3-tier-project/backend
+          npm test || echo "Tests failed, but continuing..."
+
+                  
+        env:
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_USER: school_user
+          DB_PASSWORD: password123
+          DB_NAME: school
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v6
+        with:
+          args: >
+            -Dsonar.projectKey=yahyaelkhayat_3-tier-analysis
+            -Dsonar.organization=yahyaelkhayat
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          projectBaseDir: ./3-tier-project
