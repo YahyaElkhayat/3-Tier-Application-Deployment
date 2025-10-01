@@ -14,12 +14,16 @@ spec:
       labels:
         app: mysql
     spec:
+      securityContext:              # ← ADD THIS (pod-level)
+        fsGroup: 999
+        fsGroupChangePolicy: "OnRootMismatch"
       containers:
       - image: mysql:8.0 
         name: mysql
         securityContext:
           runAsUser: 999
           runAsGroup: 999
+          runAsNonRoot: true        # ← ADD THIS for GKE best practices
         env:
           - name: MYSQL_ROOT_PASSWORD
             value: "rootpassword123"
