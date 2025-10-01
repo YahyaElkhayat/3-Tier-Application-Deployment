@@ -1,26 +1,10 @@
 apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: mysql-pv-volume
-  namespace: default
-  labels:
-    type: local
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: manual  # ← Change to match PVC
-  resources:
-    requests:
-      storage: 20Gi
-
----
-apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mysql-pv-claim
   namespace: default
 spec:
-  storageClassName: manual
+  storageClassName: standard-rwo 
   accessModes:
     - ReadWriteOnce
   resources:
