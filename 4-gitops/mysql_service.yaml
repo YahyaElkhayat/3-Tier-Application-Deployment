@@ -1,7 +1,8 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql-service 
+  name: mysql-service
+  namespace: default 
 spec:
   ports:
   - port: 3306
