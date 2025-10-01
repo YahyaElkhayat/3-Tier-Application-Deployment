@@ -6,13 +6,12 @@ metadata:
   labels:
     type: local
 spec:
-  storageClassName: manual
-  capacity:
-    storage: 20Gi
   accessModes:
     - ReadWriteOnce
-  hostPath:
-    path: "/mnt/data"
+  storageClassName: standard  
+  resources:
+    requests:
+      storage: 1Gi
 
 ---
 apiVersion: v1
