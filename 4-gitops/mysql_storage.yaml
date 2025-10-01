@@ -8,16 +8,17 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: standard  
+  storageClassName: manual  # ← Change to match PVC
   resources:
     requests:
-      storage: 1Gi
+      storage: 20Gi
 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mysql-pv-claim
+  namespace: default
 spec:
   storageClassName: manual
   accessModes:
